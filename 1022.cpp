@@ -1,78 +1,45 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 using namespace std;
-int mdc(int x, int y){
-  if (!y) return x;
-  else return mdc(y, x % y);
-}
 int main()
 {
-	int qt, N1, D1, N2, D2, NR, DR, X;
+	int qt, N1, D1, N2, D2, X, Y, Z;
 	char op;
-
+	
 	scanf("%d", &qt);
-
+	
 	for (int i=0; i < qt; i++)
 	{
 		scanf("%d / %d %c %d / %d", &N1, &D1, &op, &N2, &D2);
-
-		if (D1 > D2)
-		{
-            swap(N1, N2);
-            swap(D1, D2);
-
-			if (op == '-')
-				N1 = - N1;
-		}
-
-		NR = 0;
+		
+		X = D1 * D2;
 		
 		if (op == '+')
-		{
-		    DR = D1 * D2;
-			NR = N1 * D2;
-            NR += N2 * D1;
-		}
-		
+			Z = N1 * (X / D1) + N2 * (X / D2);
+			
 		else if (op == '-')
-		{
-		    DR = D1 * D2;
-			NR = N1 * D2;
-            NR -= N2 * D1;
-		}
+			Z = N1 * X / D1 - N2 * (X / D2);
+			
+		else if (op == '*') 
+			Z = N1 * N2;
 		
-		else if (op == '*')
-		{
-		    DR = D1 * D2;
-			NR = N1 * N2;
-		}
+		printf ("%d / %d\n", Z/Y);
 		
-		else if (op == '/')
-		{
-		    DR = D1 * N2;
-			NR = N1 * D2;
+		if(Y < 0) 
+			Y = -1 * Y;
+			
+        printf("%d / %d\n", Z / Y, X / Y);
+        
+        if (op == '/')
+        {
+        	X = D1 * N1;
+            Z = N1 * D2;
+            printf("%d / %d = ", Z, X);
+            
+            printf("%d / %d\n", Z / Y, X / Y);
 		}
-		
-		printf("%d/%d = ", NR, DR);
-		int j = 0;
-
-		X = mdc(NR, DR);
-
-		if (X < 0)
-		{
-		    DR = - DR / X;
-		    NR = - NR / X;
-		}
-		else
-		{
-            DR = DR / X;
-		    NR = NR / X;
-		}
-		printf("%d/%d\n", NR, DR);
 	}
-	system("pause");
 	return 0;
 }

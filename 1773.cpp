@@ -1,197 +1,90 @@
-#include<iostream>
-#include<vector>
-#include<queue>
+#include <stdio.h>
+#include <string.h>
 #include <cstdlib>
+#include<iostream>
+#include <vector>
+#include <set>
+#include <queue>
 
 using namespace std;
+const int numMax = 1001;
 
-#define PRETO 0 //ja passei por ele e tinha a chave
-#define CINZA 1 // tem a chave e não passei ainda
-#define BRANCO 2 // Não passei por ele
+int n, m, k;
+vector<int> adj[numMax];
+vector<int> chaves[numMax];
 
+bool visi[numMax];
+bool livre[numMax];
+bool aberto[numMax];
 
-int *molchav;
-int *cores;
-
-void chaves(int totalChaves, int u){
-	
-	for (int i = 0; i < totalChaves - 1 ; i++){
-		if(u == molchav[i])
-		{
-			cores[i + 2] = CINZA;
-			//cout <<"cor: " << cores[i+2] << endl;
-		}
-	}
-}
-
-vector< vector<int> > g; // Lista de Adjacência
-
-// Algoritmo calcula a menor distancia para alcançar todos os vertices do grafo partindo de um vertice inicial.
-void bfs(int inicio, int qtd){
-    cores = new int[qtd + 1];
-    
-
-	//para os 3 vetores a seguir, cada posição do vetor representa um vertice do grafo.
-    vector<int> d(g.size(), -1); // Vetor de distância minima para alcançar o vertice.
-	vector<int> p(g.size(), -1); // Vetor que armazena o pai de cada vertice.
-    vector<bool> cor(g.size(), false); // Define se cada vertice ja foi encontrado ou não.
-
-	queue<int> Q; // Fila que define a ordem de acesso aos vertices.
-
-	cores[1] = CINZA;
-	
-	for (int i = 2; i <= g.size(); i++)
+int main()
+{
+	while(scanf("%d %d", &n, &m) != EOF)
 	{
-        cores[i] = BRANCO;
-	}
-
-	// Inicialização
-    cor[inicio] = true; // Define a cor do vértice raiz como acessado.
-    d[inicio] = 0; // Define a distância da raiz para ela mesma como 0.
-
-    Q.push(inicio); // Enfileira a raiz.
-	int cont = 0, numero = 0;
-    // Enquanto a fila não estiver vazia.
-    while(!Q.empty()){
-		//cout << "entrou" << endl;
-
-		
-        int u = Q.front(); // Define u como sendo o vértice na frente na fila.
-        cout << "u = " << u << " e cor = " << cores[u]<< endl;
-        cout << cont << endl;
-        if (cores[u] == CINZA)
-        {
-            cores[u] == PRETO;
-            chaves(qtd, u);
-			cont = 0;
-			numero ++;
-			//cout << "ENTROU!" << endl;
-			Q.pop(); // Desenfileira.
-			//cout << "vertice atual: " << u << endl;
-
-			//cores[u] = PRETO;
-
-	        // Para todo vertice adjacente à "u".
-	        for(int i = 0; i < g[u].size(); i++){
-
-            // Se o vertice adjacente à "u" não tiver sido encontrado.
-				if(cor[g[u][i]] == false){
-					//cout << "g[u][i] = " << g[u][i] << endl;
-		            Q.push(g[u][i]); // Enfileira o vertice adjacente.
-		            cor[g[u][i]] = true; // Define o vertice adjacente como encontrado.
-		            d[g[u][i]] = d[u]+1; // Define a distancia minima para alcançar o vertice.
-		            p[g[u][i]] = u; // Define o pai do vertice adjacente como "u".
-
-	            }
-	        }
+		for(int i=1; i<=n; i++) {
+			adj[i].clear();
+			chaves[i].clear();
 		}
 		
-        else {
-			Q.push(u);
-			Q.pop();
-			cont ++;
-		}
-		if (cont > qtd)
+		for(int i=0; i<m; i++)
 		{
-			cout << "nao" << endl;
-			break;
-		}
-		else if (numero == qtd)
-		{
-            cout << "sim" << endl;
-            break;
-		}//cout << "Analizando; " << Q.front() << endl;
-    }
-    while (!Q.empty())
-    {
-		Q.pop();
-	}
-
-}
-
-int main(){
-    int N, M;
-    
-    while (cin >> N >> M)
-	{
-		int teste[N];
-		//N = quanotos vertices são; M = quantas ligações tem
-
-        molchav = new int[N + 1];
-        
-
+			int a, b;
+			scanf("%d %d", &a, &b);
 			
-		int x, y;
-		g.resize(N + 1);
-
-		/*
-	    vector< vector<int> > g;
-		for (int i = 0; i <= n; i++){
-	    	g.push_back( vector<int>(m+1, 0));// Create an empty row---declaração de lista de adjacencia com vector
-	    }
-
-	    */
+			adj[a].push_back(b);
+			adj[b].push_back(a);
+  		}
+		
+		for(int i=2; i<=n; i++)
+		{
+			int a;
+			
+   			scanf("%d", &a);
+			
+			chaves[a].push_back(i);
+		}
+		
+		memset(visi, false, sizeof(visi));
+		memset(livre, false, sizeof(livre));
+		memset(aberto, false, sizeof(aberto));
+		
+		queue<int> q;
+		
+		while(!q.empty())
+			q.pop();
+			
+		q.push(1);
+		livre[1] = aberto[1] = true;
+		
 		int cont = 0;
 		
-		for(int i = 0; i < M; i++)
+		while(!q.empty() and cont < n)
 		{
-			//int contx = 0, conty = 0;
-			cin >> x >> y;
-			g[x].push_back(y);
-			g[y].push_back(x);
-			/*
-			for (int k = 0; k <= i; k++)
+			int u = q.front(); q.pop();
+			
+			if(visi[u])
+				continue;
+				
+			visi[u] = true;
+			cont++;
+			
+			for(int i=0; i<(int)adj[u].size(); i++)
 			{
-				if (teste[k] == x)
-				    contx ++;
-				if (teste[k] == y)
-				    conty ++;
+				if(!livre[ adj[u][i] ] and aberto[ adj[u][i] ])
+					q.push( adj[u][i] );
+				
+				livre[ adj[u][i] ] = true;
 			}
-			if (contx == 0)
+			
+			for(int i=0; i<(int)chaves[u].size(); i++)
 			{
-				teste[cont] = x;
-				cont ++;
+				if(!aberto[ chaves[u][i] ] and livre[ chaves[u][i] ])
+					q.push( chaves[u][i] );
+				
+				aberto[ chaves[u][i] ] = true;
 			}
-			if (conty == 0)
-			{
-				teste[cont] = y;
-				cont ++;
-			}
-			*/
 		}
-		/*int entra = false;
-		if (cont  < N)
-		    entra = true;*/
-		int a;
-
-		for (int i = 0; i < N - 1; i++)
-		{
-			cin >> a;
-			molchav[i] = a;
-		}
-		
-		bfs(1, N); //passa o vetor "inicio" com o número digitado
-		
-		/*if (entra)
-		    //cout << "nao" << endl;
-		int contTeste = 0;
-		for (int i = 1; i < N ; i++)
-		{
-			if(cores[i] == CINZA)
-			    contTeste ++;
-		}
-		/*cout <<  contTeste << endl;
-		if (contTeste == N - 1)
-		    cout << "sim" << endl;
-		else
-		    cout << "nao" << endl;
-		//g.clear();*/
-		
-		
-
+		printf("%s\n", cont == n ? "sim" : "nao");
 	}
-
-
-	system("pause");
-    return 0;
 }
+

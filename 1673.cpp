@@ -7,69 +7,83 @@ using namespace std;
 int main()
 {
 	string N;
-
-	while (getline(cin, N))
+	
+	while (cin >> N)
 	{
-		int cont = 1;
-		bool entra = true;
-
+		int vet[130];
+		list <char> cod;
+		list <char> :: iterator it;
+		list <char> :: iterator at;
+		list <char> :: iterator ot;
+		        
 		for (int i=0; i < N.size(); i++)
 		{
-			if (cont == 1 && N[i] != N[i + 1])
+			cod.push_back(N[i]);
+		}
+		
+		int cont = 0;
+		bool entra = true;
+		char temp1, temp2;
+		
+		for (it = cod.begin(); it != cod.end(); it++)
+		{
+		    temp1 = *it;
+			at = it;
+			*at++;
+		    temp2 = *at;
+			
+			for (ot = cod.begin(); ot == it; ot++)
+				vet[*ot]++;
+				
+			if (vet[temp1] == 1)
 			{
 				if (entra)
 				{
 					printf ("1");
 					entra = false;
 				}
-
-				if (N[i] == '1')
+				
+				if (temp1 == '1')
 					printf ("1");
-
-				printf ("%c", N[i]);
-			}
-
-			else
-			{
-		    	if (entra == false)
+					
+				printf ("%c", *it);
+				
+				if (vet[temp1] != vet[temp2] && entra == false)
 				{
-					printf("1");
+				    printf ("1");
 					entra = true;
 				}
-				
-				if (N[i] != N[i + 1] )
+			}
+			
+			else if (vet[temp1] > 1)
+			{
+				if (temp1 != temp2)
 				{
-					while (cont > 0)
+				    while (cont > 0)
 					{
 						if (cont > 9)
+						{
 							printf("9");
-
+							cont -= 9;
+						}
 						else
 						{
 				    		printf ("%d", cont);
-							if (cont == 1)
-							    entra = false;
-						}
-						
-						cont -= 9;
-				    	printf ("%c", N[i]);
+				    		cont -= 9;
+				    	}
+				    		
+				    		
+				    	printf ("%c", temp1);
+				    	cont = 0;
 				    }
-				    cont = 1;
 				}
-				else
-				    cont++;
+			    else
+					cont++;
 			}
 		}
-		if (entra == false)
-		{
-			printf("1");
-			entra = true;
-		}
-	
 		printf("\n");
 	}
-
-
-	system ("pause");
+	
+	system("pause");
 	return 0;
 }

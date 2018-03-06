@@ -1,24 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 int main(void)
 {
-	int A, N, i, S;
-
-	scanf("%d %d", &A, &N);
-
-	if (N<=0) scanf("%d", &N);
-
-	for(i=1; i<=N; i++)
-	{
-		A= A+i;
-	}
-
-	
-	printf("%d\n", S);
-
-
-	system ("pause");
-	return 0;
+    int X, Y, A, B=0;
+    
+    scanf("%d %d", &X, &Y);
+    
+    while(Y<=0)
+        scanf("%d", &Y);
+        
+    for(A=1; A<=Y; A++)
+    {
+        B+=X;
+        X++;
+    }
+    printf("%d\n",B);
+    
+    system ("pause");
+    return 0;
 }

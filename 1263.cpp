@@ -8,31 +8,23 @@
 using namespace std;
 main()
 {
-	int i, cont=0, V[100], C;
+	int i, V[100], cont=0;
 	string F;
-
-	while(getline(cin, F)&& F!="EOF")
+	
+	while(getline(cin, F)!="EOF")
 	{
-		C=0;
-		cont=0;
-		int V[100]={};
-		
 		for(i=0; i<F.size(); i++)
 		{
-			if (i==0 && F[i]!= 32) V[0]=F[i];
-			else if (F[i-1]== 32)
-			{
-				C++;
-				V[C]=F[i];
-			}
+			if (i==0 && F[0]!= 32) V[i]=F[i];
+			else if (F[i-1]== 32) V[i]=F[i];
 		}
-		for (i=1; i<=C; i++)
+		for (i=1; i<F.size(); i++)
 		{
-			if (i==1 && (V[i]==V[i-1] || V[i]==V[i-1]+32 || V[i]==V[i-1]-32))
-				cont++;
-			else if (V[i]==V[i-1] || V[i]==V[i-1]+32 || V[i]==V[i-1]-32)
-				if (V[i]!=V[i-2] && V[i]!=V[i-2]+32 && V[i]!=V[i-2]-32)
-					cont++;
+			if (V[i]==V[i-1])
+			{
+				if (i=1) cont++;
+				else if(V[i-2]!=V[i]) cont++;
+			}
 		}
 		cout<<cont<<endl;
 	}

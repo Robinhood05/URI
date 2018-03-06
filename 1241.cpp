@@ -8,28 +8,23 @@
 using namespace std;
 main()
 {
-	string P1, P2;
-	int N, i, j, cont;
+	long long int N, i, j, cont=0;
+	string A, B;
 	
 	cin>>N;
-	for(i=0; i<N; i++)
+	for (i=0; i<N; i++)
 	{
-		cin>>P1>>P2;
-		for(j=0; j<P1.size(); j++)
+		cont=0;
+		cin>>A>>B;
+		for (j=0; j<B.size(); j++)
 		{
-			while(P1[j]!=P2[j])
+			if (A[A.size()-B.size()+j]==B[j])
 			{
-				P1[j]++;
 				cont++;
-				if(P1[j]>=123)
-				{
-					P1[j]=97;
-				}
-			
 			}
 		}
-		cout<<cont<<endl;
-		cont=0;
+		if (cont==B.size()) cout<<"encaixa"<<endl;
+		else cout<<"nao encaixa"<<endl;
 	}
 	
 	

@@ -1,33 +1,32 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-
-int main(void)
-{
-    int i, N, h, j, m;
-
-
-	scanf("%d", &N);
+ #include <stdio.h>
+ #include <stdlib.h>
+ 
+ main()
+ { 
+ 
+	int a[1000], i, k=0, n;
 	
-	int X[N];
-	
-	m=1000;
-
-    for (i=0; i<N; i++)
-    {
-		scanf("%d", X[i]);
-
-		if (X[i]<m)
-		{
-			m=h;
-			j=i;
-		}
-		printf("Menor valor: %d\n", m);
-		printf("Posicao: %d\n", j);
+	 
+	scanf("%d",&n);
+	   
+	for(i=0; i<n; i++)
+	{
+	    scanf("%d",&a[i]);
 	}
-
-
-
-    system ("pause");
+	 
+	int min=a[k];
+	
+	for(i=0; i<n; i++)
+	{
+		if(a[i]<min)
+	    {
+	        min=a[i];
+	        k=i;
+	    }
+	}
+	
+    printf("Menor valor: %d\nPosicao: %d\n", a[k], k);
+ 
+ 	system("pause");    
     return 0;
 }

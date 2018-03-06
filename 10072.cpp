@@ -32,10 +32,10 @@ int main()
 		
 		for (int j=0; j < eq.size(); j++)
 		{
-			if (eq[j] == '(' || eq[j] == '+' || eq[j] == '-' || eq[j] == '*' || eq[j] == '/' || eq[j] == '^' || eq[j] == ')')
+			if (eq[j] == '-' || eq[j] == '+' || eq[j] == '/' || eq[j] == '^' || eq[j] == '*' || eq[j] == '(' || eq[j] == ')' )
 			{
-				if (sinais.empty() || eq[j] == '(') 
-                	sinais.push(eq[j]);
+                if (sinais.empty() || eq[j] == '(') 
+                    sinais.push(eq[j]);
                 
 				else if (eq[j] == ')')
 				{
@@ -50,30 +50,30 @@ int main()
 				
 				else 
 				{
-					while (!sinais.empty() && P[sinais.top()] >= P[eq[j]])
+                    while (!sinais.empty()  && P[eq[j]] <= P[sinais.top()]) 
 					{
-						printf("%c", sinais.top());
-						sinais.pop();
-					}
-					
-					sinais.push(eq[j]);						
-				}
-			}
+                    	printf("%c", sinais.top());
+                    	sinais.pop();
+                	}
+                	
+                    sinais.push(eq[j]);
+                }
+            } 
 			
-			else
-				printf("%c", eq[j]);
-				
-		}
-		
-	
-		while (!sinais.empty())
+			else 
+			{
+                printf("%c", eq[j]);
+            }
+        }
+
+        while (sinais.size() > 0) 
 		{
-			printf("%c", sinais.top());
+            printf("%c", sinais.top());
 			sinais.pop();
-		}
+        }
 		printf("\n");
 		
-	}
+    }
 	
 	
 	system("pause");
